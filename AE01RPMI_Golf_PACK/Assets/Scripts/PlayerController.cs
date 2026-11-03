@@ -2,11 +2,48 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float stopVelocity = .05f;
 
-    [SerializeField]private LineRenderer lineRenderer;
+    [SerializeField] private LineRenderer lineRenderer;
+
+    private bool isIdle;
+    private bool isAiming;
+
+    private Rigidbody rigidbody;
+
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+
+        isAiming = false;
+        lineRenderer.enabled = false;
+    }
 
     private void Update()
     {
+        ProcessAim();
+
+        if (rigidbody.linearVelocity.magnitude < stopVelocity)
+        {
+            Stop();
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        if (isIdle)
+        {
+            isAiming = true;
+        }
+    }
+
+    private void ProcessAim()
+    {
+        if (!isAiming || !isIdle)
+        {
+            return;
+        }
+
         Vector3? worldPoint = CastMouseClickRay();
 
         if (!worldPoint.HasValue)
@@ -15,8 +52,20 @@ public class PlayerController : MonoBehaviour
         }
 
         DrawLine(worldPoint.Value);
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Shoot(worldPoint.Value);
+        }
     }
 
+    private void Shoot(Vector3 worldPoint)
+    {
+        isAiming = false;
+        lineRenderer.enabled = false;
+
+        Vector3 horizontalWorldPoint = new Vector3(worldPoint.z, worldPoint.y, worldPoint.x);
+    }
 
     private void DrawLine(Vector3 worldPoint)
     {
@@ -27,6 +76,14 @@ public class PlayerController : MonoBehaviour
         };
         lineRenderer.SetPositions(positions);
         lineRenderer.enabled = true;
+    }
+
+    private void Stop()
+    {
+        rigidbody.linearVelocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+
+        isIdle = true;
     }
 
     private Vector3? CastMouseClickRay()
