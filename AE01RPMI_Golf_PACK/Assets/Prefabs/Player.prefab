@@ -151,8 +151,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2575424128578037143}
-  - component: {fileID: 5800130335587740351}
-  - component: {fileID: 6649541848944448326}
+  - component: {fileID: 2708615022789066766}
   - component: {fileID: 7756490387327022031}
   - component: {fileID: 3340756315840293354}
   - component: {fileID: 1801509515180918351}
@@ -180,7 +179,7 @@ Transform:
   - {fileID: 1777529447599394678}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5800130335587740351
+--- !u!114 &2708615022789066766
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,26 +188,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4671457653373205598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beabc39612066274e87c25f661b99eb7, type: 3}
+  m_Script: {fileID: 11500000, guid: aa238a3739b7e4ca6ba00862f1626cad, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  m_EditorClassIdentifier: Assembly-CSharp::prueba
+  shotPower: 0
+  stopVelocity: 0.05
   lineRenderer: {fileID: 5417851554245938874}
---- !u!114 &6649541848944448326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4671457653373205598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13ba3c138da8557488882bbf195b9197, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor_1
-  points: 0
-  winPoints: 1
-  HideObject: {fileID: 0}
-  sceneToLoad: 0
 --- !u!33 &7756490387327022031
 MeshFilter:
   m_ObjectHideFlags: 0

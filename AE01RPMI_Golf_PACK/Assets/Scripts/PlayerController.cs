@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float shotPower;
     [SerializeField] private float stopVelocity = .05f;
 
     [SerializeField] private LineRenderer lineRenderer;
@@ -11,6 +13,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rigidbody;
 
+    private Vector2 mousePosition = Mouse.current.position.ReadValue();
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -19,22 +23,20 @@ public class PlayerController : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        ProcessAim();
-
+        
+        if (Mouse.current.leftButton.wasPressedThisFrame && isIdle)
+        {
+            isAiming = true;
+        }
+        
         if (rigidbody.linearVelocity.magnitude < stopVelocity)
         {
             Stop();
         }
-    }
 
-    private void OnMouseDown()
-    {
-        if (isIdle)
-        {
-            isAiming = true;
-        }
+        ProcessAim();
     }
 
     private void ProcessAim()
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
         DrawLine(worldPoint.Value);
 
-        if (Input.GetMouseButtonUp(0))
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
             Shoot(worldPoint.Value);
         }
@@ -64,7 +66,16 @@ public class PlayerController : MonoBehaviour
         isAiming = false;
         lineRenderer.enabled = false;
 
-        Vector3 horizontalWorldPoint = new Vector3(worldPoint.z, worldPoint.y, worldPoint.x);
+        Vector3 horizontalWorldPoint = new Vector3(
+            worldPoint.x, 
+            worldPoint.y,
+            worldPoint.z);
+
+        Vector3 direction = (horizontalWorldPoint - transform.position).normalized;
+        float strength = Vector3.Distance(transform.position, horizontalWorldPoint);
+
+        rigidbody.AddForce(direction * strength * shotPower);
+        isIdle = false;
     }
 
     private void DrawLine(Vector3 worldPoint)
@@ -90,21 +101,23 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 screenMousePosFar = new Vector3
             (
-            Input.mousePosition.x,
-            Input.mousePosition.y,
+            mousePosition.x,
+            mousePosition.y,
             Camera.main.farClipPlane
             );
 
         Vector3 screenMousePosNear = new Vector3
             (
-            Input.mousePosition.x,
-            Input.mousePosition.y,
+            mousePosition.x,
+            mousePosition.y,
             Camera.main.nearClipPlane
             );
 
         Vector3 worldMousePosFar = Camera.main.ScreenToWorldPoint(screenMousePosFar);
         Vector3 worldMousePosNear = Camera.main.ScreenToWorldPoint(screenMousePosNear);
+
         RaycastHit hit;
+
         if (Physics.Raycast(worldMousePosNear, worldMousePosFar - worldMousePosNear, out hit, float.PositiveInfinity))
         {
             return hit.point;
