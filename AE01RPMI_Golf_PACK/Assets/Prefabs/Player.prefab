@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beabc39612066274e87c25f661b99eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  playerRb: {fileID: 0}
+  playerRb: {fileID: 1801509515180918351}
   playerAudio: {fileID: 0}
   soundCollection: []
   speed: 10
