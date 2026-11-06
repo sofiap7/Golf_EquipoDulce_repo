@@ -1,131 +1,110 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float shotPower;
-    [SerializeField] private float stopVelocity = .05f;
 
-    [SerializeField] private LineRenderer lineRenderer;
+    [Header("Editor References")]
 
-    private bool isIdle;
-    private bool isAiming;
+    public Rigidbody playerRb;
+    public AudioSource playerAudio;
 
-    private Rigidbody rigidbody;
 
-    private Vector2 mousePosition = Mouse.current.position.ReadValue();
+    [Header("Sound Configuration")]
 
-    private void Awake()
-    {
-        rigidbody = GetComponent<Rigidbody>();
+    public AudioClip[] soundCollection;
 
-        isAiming = false;
-        lineRenderer.enabled = false;
-    }
 
-    private void FixedUpdate()
+    [Header("Movement Parameters")]
+
+    public float speed = 10;
+    public Vector2 movementInput; 
+
+
+    [Header("Jump^Parameters")]
+
+    public float jumpForce = 6;
+    public bool isGrounded = true; 
+
+
+    [Header("Respawn System")]
+    public float fallLimit = -5f; 
+    public Transform respawnPoint;
+
+
+    void Start()
     {
         
-        if (Mouse.current.leftButton.wasPressedThisFrame && isIdle)
-        {
-            isAiming = true;
-        }
-        
-        if (rigidbody.linearVelocity.magnitude < stopVelocity)
-        {
-            Stop();
-        }
-
-        ProcessAim();
     }
 
-    private void ProcessAim()
+   
+    void Update()
     {
-        if (!isAiming || !isIdle)
+        if (transform.position.y <= fallLimit)
         {
-            return;
-        }
-
-        Vector3? worldPoint = CastMouseClickRay();
-
-        if (!worldPoint.HasValue)
-        {
-            return;
-        }
-
-        DrawLine(worldPoint.Value);
-
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
-        {
-            Shoot(worldPoint.Value);
+            Respawn();
         }
     }
 
-    private void Shoot(Vector3 worldPoint)
+    void FixedUpdate()
     {
-        isAiming = false;
-        lineRenderer.enabled = false;
-
-        Vector3 horizontalWorldPoint = new Vector3(
-            worldPoint.x, 
-            worldPoint.y,
-            worldPoint.z);
-
-        Vector3 direction = (horizontalWorldPoint - transform.position).normalized;
-        float strength = Vector3.Distance(transform.position, horizontalWorldPoint);
-
-        rigidbody.AddForce(direction * strength * shotPower);
-        isIdle = false;
+        PhysicalMovement();
     }
 
-    private void DrawLine(Vector3 worldPoint)
+
+    void PhysicalMovement()
     {
-        Vector3[] positions =
+        playerRb.AddForce(Vector3.right * speed * movementInput.x);
+        playerRb.AddForce(Vector3.forward * speed * movementInput.y);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            transform.position,
-            worldPoint
-        };
-        lineRenderer.SetPositions(positions);
-        lineRenderer.enabled = true;
-    }
-
-    private void Stop()
-    {
-        rigidbody.linearVelocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
-
-        isIdle = true;
-    }
-
-    private Vector3? CastMouseClickRay()
-    {
-        Vector3 screenMousePosFar = new Vector3
-            (
-            mousePosition.x,
-            mousePosition.y,
-            Camera.main.farClipPlane
-            );
-
-        Vector3 screenMousePosNear = new Vector3
-            (
-            mousePosition.x,
-            mousePosition.y,
-            Camera.main.nearClipPlane
-            );
-
-        Vector3 worldMousePosFar = Camera.main.ScreenToWorldPoint(screenMousePosFar);
-        Vector3 worldMousePosNear = Camera.main.ScreenToWorldPoint(screenMousePosNear);
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(worldMousePosNear, worldMousePosFar - worldMousePosNear, out hit, float.PositiveInfinity))
-        {
-            return hit.point;
+            isGrounded = true;
         }
-        else
+
+        if (collision.gameObject.CompareTag("Obstacle"))
         {
-            return null;
+            Respawn();
         }
     }
 
+    void Jump()
+    {
+
+    }
+
+    void Respawn()
+    {
+        transform.position = respawnPoint.position;
+        playerRb.linearVelocity = Vector3.zero;
+
+        PlaySFX(1);
+    }
+
+    public void PlaySFX(int soundToPlay)
+    {
+        playerAudio.PlayOneShot(soundCollection[soundToPlay]);
+    }
+
+    #region Input Methods
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnJump (InputAction.CallbackContext context)
+    {
+        if (context.performed && isGrounded == true)
+        {
+            isGrounded = false;
+            Jump();
+        }
+    }
+
+    #endregion
 }
