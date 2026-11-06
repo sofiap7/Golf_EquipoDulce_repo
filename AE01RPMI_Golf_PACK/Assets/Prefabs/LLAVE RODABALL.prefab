@@ -97,6 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b888ecae9f538104a9e0dc50db781933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rotator
-  speedX: 5
+  speedX: 45
   speedY: 0
-  speedZ: 5
+  speedZ: 0
