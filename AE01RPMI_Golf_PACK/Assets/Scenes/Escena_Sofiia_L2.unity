@@ -595,6 +595,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: LLAVE RODABALL
       objectReference: {fileID: 0}
+    - target: {fileID: 7299408661155368222, guid: 00fc81e8b1bf3be4981201dd644e7bf4, type: 3}
+      propertyPath: speedX
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299408661155368222, guid: 00fc81e8b1bf3be4981201dd644e7bf4, type: 3}
+      propertyPath: speedY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299408661155368222, guid: 00fc81e8b1bf3be4981201dd644e7bf4, type: 3}
+      propertyPath: speedZ
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
