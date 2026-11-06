@@ -1,9 +1,9 @@
 {
     "version": 1,
-    "name": "InputActions",
+    "name": "InputAction",
     "maps": [
         {
-            "name": "InputActions",
+            "name": "InputAction",
             "id": "eba104c6-62c1-4467-a6e6-b2ad5902d65a",
             "actions": [
                 {
