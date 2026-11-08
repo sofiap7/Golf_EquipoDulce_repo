@@ -74,7 +74,9 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
+        PlaySFX(0);
     }
 
     void Respawn()
