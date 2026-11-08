@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 movementInput; 
 
 
-    [Header("Jump^Parameters")]
+    [Header("Jump Parameters")]
 
     public float jumpForce = 6;
     public bool isGrounded = true; 
