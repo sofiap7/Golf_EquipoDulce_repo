@@ -16,6 +16,8 @@ public class PlayerInteractor : MonoBehaviour
         points = 0; 
     }
 
+    [Header("Sound References")]
+    public PlayerController playerCont;
 
     void Update()
     {

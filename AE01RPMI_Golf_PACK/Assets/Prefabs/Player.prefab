@@ -83,6 +83,7 @@ MonoBehaviour:
   winPoints: 1
   HideObject: {fileID: 0}
   sceneToLoad: 0
+  playerCont: {fileID: 4506739803614492956}
 --- !u!23 &3340756315840293354
 MeshRenderer:
   m_ObjectHideFlags: 0
