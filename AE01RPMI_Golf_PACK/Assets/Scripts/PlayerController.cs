@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 movementInput; 
 
 
-    [Header("Jump^Parameters")]
+    [Header("Jump Parameters")]
 
     public float jumpForce = 6;
     public bool isGrounded = true; 
@@ -74,7 +74,9 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
+        PlaySFX(0);
     }
 
     void Respawn()
