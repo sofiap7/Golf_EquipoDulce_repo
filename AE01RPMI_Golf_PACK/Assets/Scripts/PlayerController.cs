@@ -19,12 +19,12 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Parameters")]
 
     public float speed = 10;
-    public Vector2 movementInput; 
+    public Vector2 movementInput;
 
 
-    [Header("Jump Parameters")]
+    [Header("Jump^Parameters")]
 
-    public float jumpForce = 6;
+    public float jumpForce = 50;
     public bool isGrounded = true; 
 
 
