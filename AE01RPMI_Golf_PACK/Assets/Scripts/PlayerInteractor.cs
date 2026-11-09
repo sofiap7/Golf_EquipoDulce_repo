@@ -5,7 +5,7 @@ public class PlayerInteractor : MonoBehaviour
 {
     [Header("Points System")]
     public int points; 
-    public int winPoints = 1; 
+    public int winPoints = 4; 
 
     public GameObject HideObject;
 
@@ -16,8 +16,6 @@ public class PlayerInteractor : MonoBehaviour
         points = 0; 
     }
 
-    [Header("Sound References")]
-    public PlayerController playerCont;
 
     void Update()
     {
@@ -44,8 +42,6 @@ public class PlayerInteractor : MonoBehaviour
             points++; 
 
             other.gameObject.SetActive(false); 
-
-            playerCont.PlaySFX(2);
         }
     }
 
