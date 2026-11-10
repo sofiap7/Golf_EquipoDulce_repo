@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,7 +6,8 @@ public class PlayerInteractor : MonoBehaviour
 {
     [Header("Points System")]
     public int points; 
-    public int winPoints = 4; 
+    public int winPoints = 4;
+    public TMP_Text pointsText;
 
     public GameObject HideObject;
 
@@ -15,6 +17,9 @@ public class PlayerInteractor : MonoBehaviour
     {
         points = 0; 
     }
+
+    [Header("Sound References")]
+    public PlayerController playerCont;
 
 
     void Update()
@@ -28,6 +33,8 @@ public class PlayerInteractor : MonoBehaviour
         {
             HideObject.SetActive(false);
         }
+
+        pointsText.text = "Points:" + points.ToString();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,6 +49,8 @@ public class PlayerInteractor : MonoBehaviour
             points++; 
 
             other.gameObject.SetActive(false); 
+
+            playerCont.PlaySFX(2);
         }
     }
 
